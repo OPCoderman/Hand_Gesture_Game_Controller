@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/Legion/VS_Notebooks/Real-Time_Gesture_Game_Control/mlruns/0/173151045462462687212a5b6dcea340/artifacts
+end_time: 1748343935284
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 173151045462462687212a5b6dcea340
+run_name: Logistic_Regression
+run_uuid: 173151045462462687212a5b6dcea340
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748343935244
+status: 4
+tags: []
+user_id: Legion

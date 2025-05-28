@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/Legion/VS_Notebooks/Real-Time_Gesture_Game_Control/mlruns/0/06670d73cf874450b5104dc2c253f973/artifacts
+end_time: 1748344533220
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 06670d73cf874450b5104dc2c253f973
+run_name: Logistic_Regression_Multiclass
+run_uuid: 06670d73cf874450b5104dc2c253f973
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748344521885
+status: 3
+tags: []
+user_id: Legion
