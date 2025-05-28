@@ -18,11 +18,11 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="Box2dWeb.min.js"></script>
-    <script src="Three.js"></script>
-    <script src="keyboard.js"></script>
-    <script src="jquery.js"></script>
-    <script src="maze.js"></script>
+    <script src="/static/Box2dWeb.min.js"></script>
+    <script src="/static/Three.js"></script>
+    <script src="/static/keyboard.js"></script>
+    <script src="/static/jquery.js"></script>
+    <script src="/static/maze.js"></script>
 
     <script>
       var camera = undefined,
@@ -38,9 +38,9 @@
         ballMesh = undefined,
         ballRadius = 0.25,
         keyAxis = [0, 0],
-        ironTexture = THREE.ImageUtils.loadTexture("/ball.png"),
-        planeTexture = THREE.ImageUtils.loadTexture("/concrete.png"),
-        brickTexture = THREE.ImageUtils.loadTexture("/brick.png"),
+        ironTexture = THREE.ImageUtils.loadTexture("/static/ball.png"),
+        planeTexture = THREE.ImageUtils.loadTexture("/static/concrete.png"),
+        brickTexture = THREE.ImageUtils.loadTexture("/static/brick.png"),
         gameState = undefined,
         // Box2D shortcuts
         b2World = Box2D.Dynamics.b2World,
@@ -384,7 +384,7 @@
       </video>
       <canvas class="output_canvas" width="1280px" height="720px"></canvas>
     </div>
-    <script src="api-call.js"></script>
-    <script type="module" src="mp.js"></script>
+    <script src="/static/api-call.js"></script>
+    <script type="module" src="/static/mp.js"></script>
   </body>
 </html>

@@ -1,5 +1,7 @@
 import os
+import time
 from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
@@ -11,13 +13,20 @@ from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_
 
 app = FastAPI()
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Goes up from src/app.py to project root (/app)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 # Metrics
-REQUEST_COUNT = Counter("app_request_count", "Total number of requests", ["method", "endpoint", "http_status"])
-REQUEST_LATENCY = Histogram("app_request_latency_seconds", "Request latency in seconds", ["endpoint"])
+# Metrics with correct labels you use in your middleware
+REQUEST_COUNT = Counter('hand_sign_requests_total', 'Total classification requests', ['method', 'endpoint', 'http_status'])
+REQUEST_LATENCY = Histogram('hand_sign_request_latency_seconds', 'Request latency', ['endpoint'])
+PREDICTION_COUNT = Counter('hand_sign_prediction_total', 'Count of predictions per class', ['class'])
 
-app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
+
+
+
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
@@ -35,6 +44,10 @@ booster.load_model("src/model.model")
 class LandmarkInput(BaseModel):
     landmarks: List[List[float]]
 
+@app.get("/")
+def root():
+    return FileResponse(os.path.join(STATIC_DIR, "index.html"))
+
 @app.post("/predict")
 def predict(data: LandmarkInput):
     landmarks = data.landmarks
@@ -45,7 +58,9 @@ def predict(data: LandmarkInput):
     if not all(len(lm) == 2 for lm in landmarks):
         raise HTTPException(status_code=400, detail="Each landmark must have exactly 2 values (x, y).")
 
+
     hand_sign = predict_hand_sign(landmarks)
+    PREDICTION_COUNT.labels(**{'class': hand_sign}).inc()
     return {"hand_sign": hand_sign}
 
 @app.get("/health")
@@ -60,7 +75,7 @@ async def metrics_middleware(request: Request, call_next):
 
     endpoint = request.url.path
     REQUEST_LATENCY.labels(endpoint=endpoint).observe(process_time)
-    REQUEST_COUNT.labels(method=request.method, endpoint=endpoint, http_status=response.status_code).inc()
+    REQUEST_COUNT.labels(method=request.method, endpoint=endpoint, http_status=str(response.status_code)).inc()
 
     return response
 
