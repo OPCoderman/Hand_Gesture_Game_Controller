@@ -20,3 +20,5 @@ This project implements a gesture-controlled game using machine learning for ges
 The game can be controlled through:
 - Hand gestures (via webcam)
 - Keyboard arrows (as fallback)
+## Model:
+the xgboost model has shown a staggering 99% accuracy after fine-tuning using optuna and so it was chosen as the model to use for this projecct. 
