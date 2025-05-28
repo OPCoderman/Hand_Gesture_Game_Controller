@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    image: hand_gesture_game:latest
     ports:
       - "8000:8000"
     restart: always
