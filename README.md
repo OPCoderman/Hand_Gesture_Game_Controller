@@ -46,7 +46,7 @@ The game can be controlled through:
 - Hand gestures (via webcam)
 - Keyboard arrows (as fallback)
   
-##📊 Prometheus Monitoring Queries for Hand Sign Prediction API
+## 📊 Prometheus Monitoring Queries for Hand Sign Prediction API
 
 This section lists all Prometheus queries used to monitor the performance, usage, and system metrics related to the hand sign prediction FastAPI application.
 🚀 Application-Level Metrics
