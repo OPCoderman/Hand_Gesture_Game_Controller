@@ -1,17 +1,23 @@
-from fastapi import FastAPI, HTTPException
+import os
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import xgboost as xgb
 from .model_utils import predict_hand_sign
 from fastapi.staticfiles import StaticFiles
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+
 
 app = FastAPI()
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Goes up from src/app.py to project root (/app)
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 # Metrics
 REQUEST_COUNT = Counter("app_request_count", "Total number of requests", ["method", "endpoint", "http_status"])
 REQUEST_LATENCY = Histogram("app_request_latency_seconds", "Request latency in seconds", ["endpoint"])
 
+app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
@@ -61,5 +67,3 @@ async def metrics_middleware(request: Request, call_next):
 @app.get("/metrics")
 def metrics():
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
-
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
